@@ -1,0 +1,6 @@
+/test_files
+.depend
+tp03
+*.o
+*.out
+docker.txt
