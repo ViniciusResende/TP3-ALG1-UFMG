@@ -28,61 +28,28 @@ int ALG(std::vector<int> v, int i, int left, int right, int** M) {
   if(i == v.size())
     return 0;
 
-  if(!left && !right) {
-    return max(ALG(v, i+1, v[i], v[i], M) + 1, ALG(v, i+1, left, right, M));
-    // M[i][left] = max(ALG(v, i+1, v[i], v[i], M) + 1, ALG(v, i+1, left, right, M));
-    // M[i][right] = M[i][left];
-    // return M[i][left];
+  if(M[left][right] != -1) return M[left][right];
+
+  if(!left && !right) {    
+    M[left][right] = max(ALG(v, i+1, v[i], v[i], M) + 1, ALG(v, i+1, left, right, M));
+    return M[left][right];
   }
 
   if(v[i] > left) {
-    // std::cout << "1 -> [" << i << ", " << left << "]" << std::endl;
-    // if(M[i][left] != -1 && left != -1) return M[i][left];
-
-    // M[i][left] = max(ALG(v, i-1, v[i], _right, M) + 1, ALG(v, i-1, left, right, M));
-
-    // return M[i][left];
-
-    // if(M[i][left] != -1) return M[i][left];
-
-    
-    return max(ALG(v, i+1, v[i], right, M) + 1, ALG(v, i+1, left, right, M)); 
+    M[left][right] = max(ALG(v, i+1, v[i], right, M) + 1, ALG(v, i+1, left, right, M));
+    return M[left][right]; 
   } else if(v[i] < right) {
-    // std::cout << "2 -> [" << i << ", " << right << "]" << std::endl;
-    // if(M[i][right] != -1 && right != -1) return M[i][right];
-
-    // M[i][right] = max(ALG(v, i-1, _left, v[i], M) + 1, ALG(v, i-1, left, right, M));
-
-    // return M[i][right];
-    // if(M[i][right] != -1) return M[i][right];
-
-    return max(ALG(v, i+1, left, v[i], M) + 1, ALG(v, i+1, left, right, M));
-
-    // M[i][right] = max(ALG(v, i+1, left, v[i], M) + 1, ALG(v, i+1, left, right, M));
-    // return M[i][right]; 
+    M[left][right] = max(ALG(v, i+1, left, v[i], M) + 1, ALG(v, i+1, left, right, M));
+    return M[left][right]; 
   } else {
-    // std::cout << "3 -> [" << i << ", " << right << "]" << std::endl;
-    // std::cout << "4 -> [" << i << ", " << left << "]" << std::endl;
-
-    // M[i][left] = ALG(v, i-1, _right, _left, M);
-    // M[i][right] = M[i][left];
-
-    // return M[i][left];
-    // if(M[i][left] != -1 || M[i][right] != -1) {
-    //   if(M[i][left] >= M[i][right]) return M[i][left];
-    //   if(M[i][right] >= M[i][left]) return M[i][right];
-    // }
-
-    return ALG(v, i+1, left, right, M);
-    // M[i][left] = ALG(v, i+1, left, right, M);
-    // M[i][right] = M[i][left];
-    // return M[i][left];
+    M[left][right] = ALG(v, i+1, left, right, M);
+    return M[left][right];
   }
 }
 
 int getMaxRollsDesc(std::vector<int> v, int n) {
-  int** M = (int**) malloc(n * sizeof(int*));
-  for(int i = 0; i < n; i++) {
+  int** M = (int**) malloc((n+1) * sizeof(int*));
+  for(int i = 0; i < n+1; i++) {
     M[i] = (int*) malloc((n+1) * sizeof(int));
     for(int j = 0; j < n+1; j++)
       M[i][j] = -1;
@@ -114,7 +81,6 @@ int main() {
     }
 
     std::cout << getMaxRollsDesc(silkRolls, numOfRolls) << std::endl;
-    std::cout << std::endl;
 
     // std::cout << "vector " << i << " -> ";
     // for(int roll : silkRolls)
