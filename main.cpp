@@ -43,10 +43,10 @@ int ALG(std::vector<int> v, int i, int left, int right, int** M) {
 
     // return M[i][left];
 
-    if(M[i][left] != -1) return M[i][left];
+    // if(M[i][left] != -1) return M[i][left];
 
-    M[i][left] = max(ALG(v, i+1, v[i], right, M) + 1, ALG(v, i+1, left, right, M));
-    return M[i][left]; 
+    
+    return max(ALG(v, i+1, v[i], right, M) + 1, ALG(v, i+1, left, right, M)); 
   } else if(v[i] < right) {
     // std::cout << "2 -> [" << i << ", " << right << "]" << std::endl;
     // if(M[i][right] != -1 && right != -1) return M[i][right];
